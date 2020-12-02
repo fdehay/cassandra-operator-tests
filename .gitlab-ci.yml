@@ -13,8 +13,8 @@ before_script:
   - export KUBECONFIG=/root/.kube/config
   - kubectl get nodes
 
-test-casskop-rck:
-    stage: deploy-casskop
+deploy-casskop:
+    stage: test-casskop-rck
     image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:latest
     tags:
       - inet
@@ -23,8 +23,8 @@ test-casskop-rck:
     only:
       - master
 
-test-casskop-gke:
-    stage: construct-gke
+construct-gke:
+    stage: test-casskop-gke
     image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes-external:latest
     tags:
       - inet
