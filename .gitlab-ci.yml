@@ -9,7 +9,7 @@ stages:
   - test-casskop-gke
   
 before_script:
-  - cat .kube/dex.yaml
+  - cat /root/.kube/dex.yaml
   - kubectl dex login -c pic-dev-montsouris -u ${BASIC_USER} -p ${BASIC_PWD}
   - export KUBECONFIG=/root/.kube/config
   - kubectl get nodes
