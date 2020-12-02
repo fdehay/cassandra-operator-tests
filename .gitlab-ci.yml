@@ -17,8 +17,6 @@ before_script:
 deploy-casskop:
     stage: test-casskop-rck
     image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.0
-    tags:
-      - inet
     script:
       - ls
     only:
