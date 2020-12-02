@@ -26,7 +26,7 @@ test-casskop-rck:
 test-casskop-gke:
     stage: construct-gke
     image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes-external:latest
-    tags
+    tags:
       - inet
     script:
         - ls
