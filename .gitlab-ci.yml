@@ -9,13 +9,14 @@ stages:
   - test-casskop-gke
   
 before_script:
+  - cat .kube/dex.yaml
   - kubectl dex login -c pic-dev-montsouris -u ${BASIC_USER} -p ${BASIC_PWD}
   - export KUBECONFIG=/root/.kube/config
   - kubectl get nodes
 
 deploy-casskop:
     stage: test-casskop-rck
-    image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:latest
+    image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.0
     tags:
       - inet
     script:
