@@ -23,7 +23,7 @@ test-casskop-rck:
     only:
       - master
 
-test-casskop-gke
+test-casskop-gke:
     stage: construct-gke
     image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes-external:latest
     tags
