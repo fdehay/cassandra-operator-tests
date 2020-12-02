@@ -1,0 +1,35 @@
+variables:
+  GIT_STRATEGY: clone
+  registry_user: "${BASIC_USER}"
+  registry_pass: "${BASIC_PWD}"
+  KUBECONFIG: "/etc/deploy/config"
+
+stages:
+  - test-casskop-rck
+  - test-casskop-gke
+  
+before_script:
+  - kubectl dex login -c pic-dev-montsouris -u ${BASIC_USER} -p ${BASIC_PWD}
+  - export KUBECONFIG=/root/.kube/config
+  - kubectl get nodes
+
+test-casskop-rck:
+    stage: deploy-casskop
+    image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:latest
+    tags:
+      - inet
+    script:
+      - ls
+    only:
+      - master
+
+test-casskop-gke
+    stage: construct-gke
+    image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes-external:latest
+    tags
+      - inet
+    script:
+        - ls
+        - gcloud
+    only:
+      - master
