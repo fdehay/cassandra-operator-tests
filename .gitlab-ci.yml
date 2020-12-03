@@ -10,7 +10,7 @@ stages:
   
 before_script:
   - cat /root/.kube/dex.yaml
-  - kubectl dex login -c pic-dev-montsouris -u ${BASIC_USER} -p ${BASIC_PWD}
+  - kubectl dex login -c kaas-rec-sph -u ${BASIC_USER} -p ${BASIC_PWD}
   - export KUBECONFIG=/root/.kube/config
   - kubectl get nodes
 
