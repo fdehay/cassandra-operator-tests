@@ -19,7 +19,10 @@ casskop-kuttl:
   stage: test-casskop-rck
   image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
   script:
-    - kubectl krew install kuttl
+    - set -x
+    - sudo chmod o+w /usr/local/bin/
+    - curl -L https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_x86_64 -o /usr/local/bin/kuttl
+    - chmod +x /usr/local/bin/kuttl
     - make kuttl-casskop
   only:
     - master
