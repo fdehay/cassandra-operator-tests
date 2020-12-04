@@ -6,29 +6,39 @@ variables:
 
 stages:
   - test-casskop-rck
-  - test-casskop-gke
-  
+#  - test-casskop-gke
+
 before_script:
-  - cat /root/.kube/dex.yaml
+#  - cat /root/.kube/dex.yaml
   - kubectl dex login -c kaas-rec-sph -u ${BASIC_USER} -p ${BASIC_PWD}
   - export KUBECONFIG=/root/.kube/config
   - kubectl get nodes
+  - ls
 
-deploy-casskop:
-    stage: test-casskop-rck
-    image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
-    script:
-      - ls
-    only:
-      - master
+casskop-kuttl:
+  stage: test-casskop-rck
+  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
+  script:
+    - kubectl krew install kuttl
+    - make kuttl-casskop
+  only:
+    - master
 
-construct-gke:
-    stage: test-casskop-gke
-    image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes-external:latest
-    tags:
-      - inet
-    script:
-        - ls
-        - gcloud
-    only:
-      - master
+#deploy-casskop:
+#  stage: test-casskop-rck
+#  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
+#  script:
+#    - ls
+#  only:
+#    - master
+
+#construct-gke:
+#    stage: test-casskop-gke
+#    image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes-external:latest
+#    tags:
+#      - inet
+#    script:
+#        - ls
+#        - gcloud
+#    only:
+#      - master

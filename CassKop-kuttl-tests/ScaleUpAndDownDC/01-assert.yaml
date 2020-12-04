@@ -10,6 +10,7 @@ apiVersion: db.orange.com/v1alpha1
 kind: CassandraCluster
 metadata:
   name: cassandra-e2e
+  namespace: casskop-cassandra-e2e
 spec:
   nodesPerRacks: 1
   topology:
