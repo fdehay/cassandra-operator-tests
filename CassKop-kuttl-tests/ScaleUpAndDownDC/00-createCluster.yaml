@@ -2,7 +2,6 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
   - command: helm install casskop --namespace=casskop-cassandra-e2e orange-incubator/cassandra-operator
-    namespaced: false
 ---
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraCluster

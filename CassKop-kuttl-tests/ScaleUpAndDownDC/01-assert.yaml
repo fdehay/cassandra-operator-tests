@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: cassandra-e2e-dc1-rack1
+  namespace: casskop-cassandra-e2e
 status:
   currentReplicas: 2
   replicas: 2
