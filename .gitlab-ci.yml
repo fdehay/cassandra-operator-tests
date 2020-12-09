@@ -19,7 +19,7 @@ casskop-kuttl:
   stage: test-casskop-rck
   image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
   script:
-    - curl -L https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_x86_64 -o kuttl
+#    - curl -L https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_x86_64 -o kuttl
     - chmod +x kuttl
     - make kuttl-casskop-casskop-cassandra-e2e
   only:
