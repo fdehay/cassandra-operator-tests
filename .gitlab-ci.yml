@@ -23,7 +23,7 @@ casskop-kuttl:
     chart_name: cassandra-operator
   script:
 #    - curl -L https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_x86_64 -o kuttl
-    - helm repo $add chart_name $helm_repo
+    - helm repo add $chart_name $helm_repo
     - helm repo update
     - chmod +x kuttl
     - cp -v /root/.kube/config kubeconfig
