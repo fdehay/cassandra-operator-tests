@@ -1,9 +1,9 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  - command: helm uninstall casskop --namespace casskop-cassandra-e2e casskop/cassandra-operator
+  - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
     ignoreFailure: true
-  - command: helm install casskop --namespace casskop-cassandra-e2e casskop/cassandra-operator --skip-crds
+  - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds
 ---
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraCluster
