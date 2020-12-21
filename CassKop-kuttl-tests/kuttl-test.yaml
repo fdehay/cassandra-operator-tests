@@ -5,10 +5,3 @@ testDirs:
   - .
 timeout: 300
 commands:
-
-#  - command: kubectl delete crd ...
-#    ignoreFailure: true
-  - command: helm repo add orange-incubator https://orange-kubernetes-charts-incubator.storage.googleapis.com/
-    ignoreFailure: true
-  - command: helm repo update orange-incubator https://orange-kubernetes-charts-incubator.storage.googleapis.com/
-    ignoreFailure: true
