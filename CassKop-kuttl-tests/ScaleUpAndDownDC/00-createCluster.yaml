@@ -12,13 +12,22 @@ metadata:
   namespace: casskop-cassandra-e2e
 spec:
   nodesPerRacks: 1
-  cassandraImage: cassandra:latest
+  cassandraImage: cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-1915107
   dataCapacity: "1Gi"
   hardAntiAffinity: false
   deletePVC: false
   autoPilot: true
   autoUpdateSeedList: false
-  bootstrapImage: orangeopensource/cassandra-bootstrap:0.1.7
+  bootstrapImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-bootstrap:0.1.4-2331979
+  backRestSidecar:
+    image: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/instaclustr-icarus:icarus-1.0.5
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
   resources:
     requests: &requests
       cpu: 100m
