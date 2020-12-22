@@ -12,7 +12,7 @@ metadata:
   namespace: casskop-cassandra-e2e
 spec:
   nodesPerRacks: 1
-  cassandraImage: cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-1915107
+  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-1915107
   dataCapacity: "1Gi"
   hardAntiAffinity: false
   deletePVC: false
