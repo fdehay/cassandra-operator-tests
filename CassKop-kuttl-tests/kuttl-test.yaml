@@ -3,5 +3,5 @@ kind: TestSuite
 #crdDir: ../../../deploy/crds/
 testDirs:
   - .
-timeout: 1200
+timeout: 300
 #commands:
