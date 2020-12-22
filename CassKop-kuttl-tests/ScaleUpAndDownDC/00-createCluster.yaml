@@ -2,7 +2,7 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
   # First uninstall previous (potential) Casskop installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
-  - command: helm delete casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --purge
+  - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
     ignoreFailure: true
   # Install Casskop local chart & override the casskop image with an internal one (clone)
   - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=ext-dockerio.artifactory.si.francetelecom.fr/orangeopensource/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
