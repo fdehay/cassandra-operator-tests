@@ -14,13 +14,15 @@ metadata:
   namespace: casskop-cassandra-e2e
 spec:
   nodesPerRacks: 1
-#  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-1915107
-  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
+  cassandraImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/k8s/cassandra:latest
+#  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
+#  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-1915107 # OLD
   dataCapacity: "1Gi"
   dataStorageClass: local-storage
   gcStdout: true
   initContainerCmd: cp -vr /etc/cassandra/* /bootstrap
-  initContainerImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
+  #initContainerImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
+  initContainerImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra:latest
   livenessFailureThreshold: 100
   livenessHealthCheckPeriod: 60
   livenessHealthCheckTimeout: 60
@@ -49,9 +51,11 @@ spec:
 #          requests:
 #            storage: 1Gi
 #        storageClassName: local-storage
-  bootstrapImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-bootstrap:0.1.4-2331979
+#  bootstrapImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-bootstrap:0.1.4-2331979
+  bootstrapImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra-bootstrap:0.1.7
   backRestSidecar:
-    image: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/instaclustr-icarus:icarus-1.0.5
+#    image: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/instaclustr-icarus:icarus-1.0.5
+    image: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/instaclustr-icarus:icarus-1.0.5
     resources:
       limits:
         cpu: 500m
