@@ -13,6 +13,7 @@ metadata:
   name: cassandra-e2e
   namespace: casskop-cassandra-e2e
 spec:
+  imagePullSecret: casskopdocerrepo
   nodesPerRacks: 1
   cassandraImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/k8s/cassandra:latest
 #  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
