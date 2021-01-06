@@ -1,0 +1,75 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  # First uninstall previous (potential) Casskop installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
+  - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
+    ignoreFailure: true
+  # Install Casskop local chart & override the casskop image with an internal one (clone)
+  - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=ext-dockerio.artifactory.si.francetelecom.fr/orangeopensource/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
+---
+apiVersion: db.orange.com/v1alpha1
+kind: CassandraCluster
+metadata:
+  name: cassandra-e2e
+  namespace: casskop-cassandra-e2e
+spec:
+  nodesPerRacks: 1
+  cassandraImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra:latest
+#  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
+#  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-1915107 # OLD
+  dataCapacity: "1Gi"
+  dataStorageClass: local-storage
+  gcStdout: true
+  initContainerCmd: cp -vr /etc/cassandra/* /bootstrap
+  #initContainerImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
+  initContainerImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra:latest
+  livenessFailureThreshold: 100
+  livenessHealthCheckPeriod: 60
+  livenessHealthCheckTimeout: 60
+  livenessInitialDelaySeconds: 120
+  maxPodUnavailable: 1
+#  pod:
+#    annotations:
+#      cni.projectcalico.org/ipv4pools: '["pns-cassandra-preprod-routable"]'
+  readOnlyRootFilesystem: true
+  readinessHealthCheckPeriod: 10
+  readinessHealthCheckTimeout: 10
+  readinessInitialDelaySeconds: 60
+  hardAntiAffinity: false
+  deletePVC: true
+  autoPilot: true
+  autoUpdateSeedList: false
+  restartCountBeforePodDeletion: 3
+  runAsUser: 999
+#  #storageConfigs:
+#   # - mountPath: /var/log/cassandra/
+#    #  name: system-logs
+#     # pvcSpec:
+#      #  accessModes:
+#       # - ReadWriteOnce
+#        #resources:
+#          requests:
+#            storage: 1Gi
+#        storageClassName: local-storage
+#  bootstrapImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-bootstrap:0.1.4-2331979
+  bootstrapImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra-bootstrap:0.1.7
+  backRestSidecar:
+#    image: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/instaclustr-icarus:icarus-1.0.5
+    image: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/instaclustr-icarus:1.0.5
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+  resources:
+    requests: &requests
+      cpu: 500m
+      memory: 512Mi
+    limits: *requests
+  topology:
+    dc:
+      - name: dc1
+        rack:
+          - name: rack1

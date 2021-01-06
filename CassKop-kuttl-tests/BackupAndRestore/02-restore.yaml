@@ -1,0 +1,11 @@
+apiVersion: db.orange.com/v1alpha1
+kind: CassandraRestore
+metadata:
+  name: test-cassandra-restore
+  labels:
+    app: cassandra
+spec:
+  cassandraBackup: test-cassandra-backup
+  cassandraCluster: cassandra-e2e
+  restorationStrategyType: HARDLINKS
+  entities: k1.t1

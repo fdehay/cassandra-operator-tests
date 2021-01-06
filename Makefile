@@ -1,2 +1,11 @@
-kuttl-casskop-casskop-cassandra-e2e:
-	./kuttl test --config ./CassKop-kuttl-tests/kuttl-test.yaml ./CassKop-kuttl-tests --namespace casskop-cassandra-e2e
+ifeq (kuttl-test,$(firstword $(MAKECMDGOALS)))
+  KUTTL_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(KUTTL_ARGS):;@:)
+endif
+
+ifeq ($(KUTTL_ARGS),)
+	@echo "args are: ScaleUpAndDownDC ; BackupAndRestore" && exit 1
+endif
+
+rick-kuttl-test:
+	./kuttl test --config ./CassKop-kuttl-tests/kuttl-test.yaml --test $(KUTTL_ARGS) --namespace casskop-cassandra-e2e

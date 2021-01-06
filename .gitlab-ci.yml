@@ -14,24 +14,33 @@ before_script:
 #  - cat /root/.kube/dex.yaml
   - kubectl dex login -c kaas-rec-sph -u ${BASIC_USER} -p ${BASIC_PWD}
   - export KUBECONFIG=/root/.kube/config
-  - kubectl get nodes
-  - ls
+  # Setup Kuttl
+#    - curl -L https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_x86_64 -o kuttl
+  - chmod +x kuttl
+  - cp -v /root/.kube/config kubeconfig
+  # Setup cluster namespace with Casskop
+  - helm repo add $helm_name $helm_repo
+  - helm repo update
 
-casskop-kuttl:
+kuttl-ScaleUpAndDownDC-rick:
   stage: test-casskop-rck
   image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
   variables:
     chart_name: cassandra-operator
   script:
-#    - curl -L https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_x86_64 -o kuttl
-    - helm repo add $helm_name $helm_repo
-    - helm repo update
-    - helm search repo $helm_name
-    - chmod +x kuttl
-    - cp -v /root/.kube/config kubeconfig
-    - make kuttl-casskop-casskop-cassandra-e2e
+    - make kuttl-test ScaleUpAndDownDC
   only:
     - master
+
+#kuttl-BackupAndRestore-rick:
+#  stage: test-casskop-rck
+#  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
+#  variables:
+#    chart_name: cassandra-operator
+#  script:
+#    - make rick-kuttl-test BackupAndRestore
+#  only:
+#    - master
 
 #deploy-casskop:
 #  stage: test-casskop-rck
