@@ -1,4 +1,4 @@
-ifeq (kuttl-test,$(firstword $(MAKECMDGOALS)))
+ifeq (rick-kuttl-test,$(firstword $(MAKECMDGOALS)))
   KUTTL_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(KUTTL_ARGS):;@:)
 endif
