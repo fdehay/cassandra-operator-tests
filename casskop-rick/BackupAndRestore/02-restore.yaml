@@ -8,4 +8,4 @@ spec:
   cassandraBackup: test-cassandra-backup
   cassandraCluster: cassandra-e2e
   restorationStrategyType: HARDLINKS
-  entities: k1.t1
+  entities: k1.standard1
