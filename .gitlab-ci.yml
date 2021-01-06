@@ -28,7 +28,7 @@ kuttl-ScaleUpAndDownDC-rick:
   variables:
     chart_name: cassandra-operator
   script:
-    - make kuttl-test ScaleUpAndDownDC
+    - make rick-kuttl-test ScaleUpAndDownDC
   only:
     - master
 
