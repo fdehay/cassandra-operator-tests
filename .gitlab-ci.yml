@@ -7,7 +7,7 @@ variables:
   helm_name: casskop
 
 stages:
-  - test-casskop-rck
+  - test-casskop-rick
 #  - test-casskop-gke
 
 before_script:
@@ -16,14 +16,14 @@ before_script:
   - export KUBECONFIG=/root/.kube/config
   # Setup Kuttl
 #    - curl -L https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_x86_64 -o kuttl
-  - chmod +x kuttl
-  - cp -v /root/.kube/config kubeconfig
+  - chmod +x casskop-rick/kuttl
+  - cp -v /root/.kube/config casskop-rick/kubeconfig
   # Setup cluster namespace with Casskop
   - helm repo add $helm_name $helm_repo
   - helm repo update
 
 kuttl-ScaleUpAndDownDC-rick:
-  stage: test-casskop-rck
+  stage: test-casskop-rick
   image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
   variables:
     chart_name: cassandra-operator
@@ -33,7 +33,7 @@ kuttl-ScaleUpAndDownDC-rick:
     - master
 
 #kuttl-BackupAndRestore-rick:
-#  stage: test-casskop-rck
+#  stage: test-casskop-rick
 #  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
 #  variables:
 #    chart_name: cassandra-operator
@@ -43,7 +43,7 @@ kuttl-ScaleUpAndDownDC-rick:
 #    - master
 
 #deploy-casskop:
-#  stage: test-casskop-rck
+#  stage: test-casskop-rick
 #  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
 #  script:
 #    - ls

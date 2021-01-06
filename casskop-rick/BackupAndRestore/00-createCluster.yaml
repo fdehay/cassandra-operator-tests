@@ -73,3 +73,9 @@ spec:
       - name: dc1
         rack:
           - name: rack1
+---
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  # Fill Cassandra tables
+  - command: kubectl exec -ti cassandra-e2e-dc1-rack1-0  -- /opt/cassandra/tools/bin/cassandra-stress write n=20000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -schema 'Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'
