@@ -4,8 +4,8 @@ commands:
   # First uninstall previous (potential) Casskop installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
   - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
     ignoreFailure: true
- - command: kubectl delete cassandraclusters.db.orange.com --all
-     ignoreFailure: true
+  - command: kubectl delete cassandraclusters.db.orange.com --all --namespace casskop-cassandra-e2e
+    ignoreFailure: true
   # Install Casskop local chart & override the casskop image with an internal one (clone)
   - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
 ---
