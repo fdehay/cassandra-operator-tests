@@ -7,7 +7,7 @@ commands:
   - command: kubectl delete cassandraclusters.db.orange.com --all
     ignoreFailure: true
   # Install Casskop local chart & override the casskop image with an internal one (clone)
-  - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/casskop:v1.0.2-release --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
+  - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
 ---
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraCluster
