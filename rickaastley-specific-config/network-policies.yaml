@@ -1,0 +1,236 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: icarus-intra-nodes
+spec:
+  podSelector: &podselector_nodes
+    matchLabels:
+      app: cassandracluster
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app: cassandra
+      podSelector: *podselector_nodes
+  - ports: &intranodes_ports
+      - protocol: TCP
+        port: 4567
+  egress:
+  - ports: *intranodes_ports
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: casskop-icarus-nodes
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandracluster
+  ingress:
+  - ports:
+    - protocol: TCP
+      port: 4567
+  - from:
+    - podSelector:
+        matchLabels:
+          app: cassandra-operator
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: casskop-egress-icarus
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandra-operator
+  egress:
+  - ports:
+    - protocol: TCP
+      port: 4567
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cassandra-ingress-icarus-from-casskop
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandracluster
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            app: cassandra
+        podSelector:
+          matchLabels:
+            app: cassandra-operator
+    - ports:
+        - protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cassandra-s3-backup
+spec:
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.107.11.35/32 # From S3 endpoint
+  - ports:
+    - port: 443
+      protocol: TCP
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 10.100.144.128/25 # From casskop-routable (referential data)
+  - ports:
+    - port: 443
+      protocol: TCP  
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cassandra-intra-nodes
+spec:
+  podSelector: &podselector_nodes
+    matchLabels:
+      app: cassandracluster
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app: cassandra
+      podSelector: *podselector_nodes
+  - ports: &intranodes_ports
+      - protocol: TCP
+        port: 7000
+      - protocol: TCP
+        port: 7001
+  egress:
+  - ports: *intranodes_ports
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cassandra-native
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandracluster
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app: cassandra
+      podSelector:
+        matchExpressions:
+          - key: app
+            operator: In
+            values:
+              - cassandra-stress
+              - toolbox
+              - cassandra-client
+  - ports: &native_port
+    - protocol: TCP
+      port: 9042
+    - protocol : TCP
+      port: 9142  
+  egress:
+  - ports: *native_port
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: casskop-jolokia-nodes
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandracluster
+  ingress:
+  - ports:
+    - protocol: TCP
+      port: 8778
+  - from:
+    - podSelector:
+        matchLabels:
+          app: cassandra-operator
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cassandra-intra-cluster-sph
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandracluster
+  ingress:
+  - from: &ip_block
+    - ipBlock:
+        cidr: 10.100.144.128/25
+  - ports: &intranodes_ports
+    - protocol: TCP
+      port: 7000
+    - protocol: TCP
+      port: 7001
+  egress:
+  - to: *ip_block
+  - ports: *intranodes_ports
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: prometheus-cassandra-nodes
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandracluster
+  ingress:
+  - ports:
+    - port: 9500
+      protocol: TCP
+  - from:
+    - podSelector: &selector
+        matchLabels:
+          app: prometheus
+    - namespaceSelector: *selector
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: casskop-egress-jolokia
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandra-operator
+  egress:
+  - ports:
+    - protocol: TCP
+      port: 8778
+    - protocol: TCP
+      port: 7199
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cassandra-ingress-jolokia-from-casskop
+spec:
+  podSelector:
+    matchLabels:
+      app: cassandracluster
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            app: cassandra
+        podSelector:
+          matchLabels:
+            app: cassandra-operator
+    - ports:
+        - protocol: TCP
+          port: 8778
+        - protocol: TCP
+          port: 7199

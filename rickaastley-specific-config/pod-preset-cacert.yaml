@@ -1,0 +1,16 @@
+apiVersion: settings.k8s.io/v1alpha1
+kind: PodPreset
+metadata:
+  name: mount-special-config-java
+spec:
+  selector:
+    matchLabels:
+      app: cassandracluster
+      cassandracluster: cassandra-e2e
+  volumeMounts:
+      - name: cacerts-java-orange
+        mountPath: /etc/ssl/certs/java
+  volumes:
+    - name: cacerts-java-orange
+      configMap:
+        name: cacerts-java-orange
