@@ -1,12 +1,22 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  # First uninstall previous (potential) Casskop installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
-  - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
-    ignoreFailure: true
+  # First uninstall previous (potential) CRDs left in NS
   - command: kubectl delete cassandraclusters.db.orange.com --all --namespace casskop-cassandra-e2e
     ignoreFailure: true
-  # Install Casskop local chart & override the casskop image with an internal one (clone)
+  - command: kubectl delete cassandrabackups.db.orange.com --all --namespace casskop-cassandra-e2e
+    ignoreFailure: true
+  - command: kubectl delete cassandrarestores.db.orange.com --all --namespace casskop-cassandra-e2e
+    ignoreFailure: true
+
+ # Then delete Casskop helm installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
+  - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
+    ignoreFailure: true
+
+ # Install Rickaastley requirements (network policies, configmap cacert) to run Casskop
+  - command: kubectl apply -f ../../rickaastley-specific-config
+
+ # Finally, install Casskop chart (from Artifactory) & override the default Casskop docker image with an internal one from Artifactory (same as default)
   - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
 ---
 apiVersion: db.orange.com/v1alpha1
@@ -79,5 +89,19 @@ spec:
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
+  # Apply backup S3 secret
+  - command: |
+    cat <<EOF|k apply -f -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: rick-s3-backup-restore-secret
+    type: Opaque
+    stringData:
+      awsaccesskeyid: ${S3_ID}
+      awssecretaccesskey: ${S3_KEY}
+      awsregion: "Sophia"
+      awsendpoint: "https://zone2.s3.orangeportails.net"
+
   # Fill Cassandra tables
   - command: kubectl exec -ti cassandra-e2e-dc1-rack1-0  -- /opt/cassandra/tools/bin/cassandra-stress write n=20000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -schema 'Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'

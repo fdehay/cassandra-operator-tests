@@ -7,8 +7,8 @@ variables:
   helm_name: casskop
 
 stages:
-  - test-casskop-rick
-#  - test-casskop-gke
+  - ScaleUpAndDownDC
+  - BackupAndRestore
 
 before_script:
 #  - cat /root/.kube/dex.yaml
@@ -23,7 +23,7 @@ before_script:
   - helm repo update
 
 kuttl-ScaleUpAndDownDC-rick:
-  stage: test-casskop-rick
+  stage: ScaleUpAndDownDC
   image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
   variables:
     chart_name: cassandra-operator
@@ -33,7 +33,7 @@ kuttl-ScaleUpAndDownDC-rick:
     - master
 
 kuttl-BackupAndRestore-rick:
- stage: test-casskop-rick
+ stage: BackupAndRestore
  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
  variables:
    chart_name: cassandra-operator
