@@ -4,8 +4,10 @@ commands:
   # First uninstall previous (potential) CRDs left in NS
   - command: kubectl delete cassandraclusters.db.orange.com --all --namespace casskop-cassandra-e2e
     ignoreFailure: true
+
   - command: kubectl delete cassandrabackups.db.orange.com --all --namespace casskop-cassandra-e2e
     ignoreFailure: true
+    
   - command: kubectl delete cassandrarestores.db.orange.com --all --namespace casskop-cassandra-e2e
     ignoreFailure: true
 
