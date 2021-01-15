@@ -1,12 +1,22 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  # First uninstall previous (potential) Casskop installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
-  - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
-    ignoreFailure: true
+  # First uninstall previous (potential) CRDs left in NS
   - command: kubectl delete cassandraclusters.db.orange.com --all --namespace casskop-cassandra-e2e
     ignoreFailure: true
-  # Install Casskop local chart & override the casskop image with an internal one (clone)
+  - command: kubectl delete cassandrabackups.db.orange.com --all --namespace casskop-cassandra-e2e
+    ignoreFailure: true
+  - command: kubectl delete cassandrarestores.db.orange.com --all --namespace casskop-cassandra-e2e
+    ignoreFailure: true
+
+ # Then delete Casskop helm installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
+  - command: helm uninstall casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name
+    ignoreFailure: true
+
+ # Install Rickaastley requirements (network policies, configmap cacert) to run Casskop
+  - command: kubectl apply -f ../../rickaastley-specific-config
+
+ # Finally, install Casskop chart (from Artifactory) & override the default Casskop docker image with an internal one from Artifactory (same as default)
   - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
 ---
 apiVersion: db.orange.com/v1alpha1
