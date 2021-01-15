@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: db.orange.com/v1alpha1s
 kind: CassandraRestore
 metadata:
   name: test-cassandra-restore
