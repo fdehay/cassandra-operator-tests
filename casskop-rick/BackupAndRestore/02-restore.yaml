@@ -2,6 +2,7 @@ apiVersion: db.orange.com/v1alpha1
 kind: CassandraRestore
 metadata:
   name: test-cassandra-restore
+  namespace: casskop-cassandra-e2e
   labels:
     app: cassandra
 spec:

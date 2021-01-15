@@ -8,8 +8,7 @@ metadata:
 spec:
   cassandraCluster: cassandra-e2e
   datacenter: dc1
-  storageLocation: s3://casskop-backup-restore-test
-  snapshotTag: SnapshotTag1
+  storageLocation: "s3://casskop-backup-restore-test"
+  snapshotTag: kuttlTestBackup
   secret: rick-s3-backup-restore-secret
-#  schedule: "@midnight"
   entities: k1.standard1

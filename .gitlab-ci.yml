@@ -32,15 +32,15 @@ kuttl-ScaleUpAndDownDC-rick:
   only:
     - master
 
-#kuttl-BackupAndRestore-rick:
-#  stage: test-casskop-rick
-#  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
-#  variables:
-#    chart_name: cassandra-operator
-#  script:
-#    - make rick-kuttl-test BackupAndRestore
-#  only:
-#    - master
+kuttl-BackupAndRestore-rick:
+ stage: test-casskop-rick
+ image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
+ variables:
+   chart_name: cassandra-operator
+ script:
+   - make rick-kuttl-test BackupAndRestore
+ only:
+   - master
 
 #deploy-casskop:
 #  stage: test-casskop-rick
