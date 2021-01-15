@@ -7,7 +7,7 @@ commands:
 
   - command: kubectl delete cassandrabackups.db.orange.com --all --namespace casskop-cassandra-e2e
     ignoreFailure: true
-    
+
   - command: kubectl delete cassandrarestores.db.orange.com --all --namespace casskop-cassandra-e2e
     ignoreFailure: true
 
@@ -16,7 +16,7 @@ commands:
     ignoreFailure: true
 
  # Install Rickaastley requirements (network policies, configmap cacert) to run Casskop
-  - command: kubectl apply -f ../../rickaastley-specific-config
+  - command: kubectl apply -f ../../rickaastley-specific-config --namespace casskop-cassandra-e2e
 
  # Finally, install Casskop chart (from Artifactory) & override the default Casskop docker image with an internal one from Artifactory (same as default)
   - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
