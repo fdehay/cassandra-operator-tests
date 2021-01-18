@@ -1,7 +1,7 @@
-apiVersion: db.orange.com/v1alpha1s
-kind: CassandraRestore
+apiVersion: db.orange.com/v1alpha1
+kind: CassandraBackup
 metadata:
-  name: test-cassandra-restore
+  name: test-cassandra-backup
   namespace: casskop-cassandra-e2e
 status:
   condition: 
