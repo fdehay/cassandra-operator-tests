@@ -28,8 +28,6 @@ kind: CassandraBackup
 metadata:
   name: test-cassandra-backup
   namespace: casskop-cassandra-e2e
-  labels:
-    app: cassandra
 spec:
   cassandraCluster: cassandra-e2e
   datacenter: dc1
