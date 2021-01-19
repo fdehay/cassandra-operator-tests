@@ -7,8 +7,8 @@ variables:
   helm_name: casskop
 
 stages:
-  - ScaleUpAndDownDC
   - BackupAndRestore
+  - ScaleUpAndDownDC
 
 before_script:
 #  - cat /root/.kube/dex.yaml
