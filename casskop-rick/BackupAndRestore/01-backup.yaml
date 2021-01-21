@@ -21,7 +21,7 @@ commands:
   #   EOF
 
   # Fill Cassandra tables
-  - command: kubectl --namespace casskop-cassandra-e2e exec -ti cassandra-e2e-dc1-rack1-0  -- /opt/cassandra/tools/bin/cassandra-stress write n=20000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -schema 'Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=1)'
+  - command: kubectl --namespace casskop-cassandra-e2e exec -ti cassandra-e2e-dc1-rack1-1  -- /opt/cassandra/tools/bin/cassandra-stress write n=20000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -schema 'Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'
 ---
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraBackup
