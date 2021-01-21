@@ -19,7 +19,7 @@ commands:
   - command: kubectl apply -f ../../rickaastley-specific-config --namespace casskop-cassandra-e2e
 
  # Finally, install Casskop chart (from Artifactory) & override the default Casskop docker image with an internal one from Artifactory (same as default)
-  - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
+  - command: helm install casskop --namespace casskop-cassandra-e2e $helm_name/$chart_name --skip-crds --set image.repository=ext-dockerio.artifactory.si.francetelecom.fr/orangeopensource/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
 ---
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraCluster
@@ -27,7 +27,7 @@ metadata:
   name: cassandra-e2e
   namespace: casskop-cassandra-e2e
 spec:
-  nodesPerRacks: 1
+  nodesPerRacks: 2
   cassandraImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra:latest
 #  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-openjdk-2441353
 #  cassandraImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-k8s:3.11.3-1915107 # OLD
@@ -66,7 +66,7 @@ spec:
 #            storage: 1Gi
 #        storageClassName: local-storage
 #  bootstrapImage: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/cassandra-bootstrap:0.1.4-2331979
-  bootstrapImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra-bootstrap:0.1.7
+  bootstrapImage: ext-dockerio.artifactory.si.francetelecom.fr/orangeopensource/cassandra-bootstrap:0.1.7
   backRestSidecar:
 #    image: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/instaclustr-icarus:icarus-1.0.5
     image: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/instaclustr-icarus:1.0.5
