@@ -24,6 +24,8 @@ commands:
     namespaced: true
 
   # Apply S3 secret
+  - command: ls && ls ../.. && ls ../../rickaastley-specific-config/
+  
   - command: (../../rickaastley-specific-config/secret-s3.yaml.sh) | kubectl apply -f -
     namespaced: true
 
