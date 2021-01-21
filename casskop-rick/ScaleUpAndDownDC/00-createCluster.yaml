@@ -27,6 +27,10 @@ commands:
   - command: kubectl apply -f ../../rickaastley-specific-config
     namespaced: true
 
+  # Apply S3 secret
+  - command: ../../rickaastley-specific-config/secret-s3.yaml.sh | kubectl apply -f -
+    namespaced: true
+
 
  # Finally, install Casskop chart (from Artifactory) & override the default Casskop docker image with an internal one from Artifactory (same as default)
   - command: helm install casskop $helm_name/$chart_name --skip-crds --set image.repository=ext-dockerio.artifactory.si.francetelecom.fr/orangeopensource/casskop --set image.tag=v1.0.2-release --no-hooks --set debug.enabled=true
