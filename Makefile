@@ -8,4 +8,4 @@ ifeq ($(KUTTL_ARGS),)
 endif
 
 rick-kuttl-test:
-	cd casskop-rick && ./kuttl test --test $(KUTTL_ARGS) --namespace $NAMESPACE && cd ..
+	cd casskop-rick && ./kuttl test --test $(KUTTL_ARGS) --namespace $(NAMESPACE) && cd ..
