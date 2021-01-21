@@ -9,8 +9,8 @@ variables:
   NAMESPACE: casskop-cassandra-e2e
 
 stages:
- - ScaleUpAndDownDC
  - BackupAndRestore
+ - ScaleUpAndDownDC
 
 before_script:
 #  - cat /root/.kube/dex.yaml
@@ -25,22 +25,20 @@ before_script:
   - helm repo update
 
 kuttl-ScaleUpAndDownDC-rick:
-  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
   stage: ScaleUpAndDownDC
+  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
   script:
     - make rick-kuttl-test ScaleUpAndDownDC
   only:
     - master
-  when: always
 
 kuttl-BackupAndRestore-rick:
- image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
  stage: BackupAndRestore
+ image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
  script:
    - make rick-kuttl-test BackupAndRestore
  only:
    - master
- when: always
 
 #deploy-casskop:
 #  stage: test-casskop-rick
