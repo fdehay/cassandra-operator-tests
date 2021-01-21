@@ -6,28 +6,28 @@ commands:
 
   # Apply backup S3 secret
   # - command: |-
-  #   cat <<EOF|kubectl apply -f -
-  #   apiVersion: v1
-  #   kind: Secret
-  #   metadata:
-  #     name: rick-s3-backup-restore-secret
-  #     namespace: casskop-cassandra-e2e
-  #   type: Opaque
-  #   stringData:
-  #     awsaccesskeyid: ${S3_ID}
-  #     awssecretaccesskey: ${S3_KEY}
-  #     awsregion: "Sophia"
-  #     awsendpoint: "https://zone2.s3.orangeportails.net"
-  #   EOF
+    cat <<EOF|kubectl apply -f -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: rick-s3-backup-restore-secret
+      
+    type: Opaque
+    stringData:
+      awsaccesskeyid: ${S3_ID}
+      awssecretaccesskey: ${S3_KEY}
+      awsregion: "Sophia"
+      awsendpoint: "https://zone2.s3.orangeportails.net"
+    EOF
 
   # Fill Cassandra tables
-  - command: kubectl --namespace casskop-cassandra-e2e exec -ti cassandra-e2e-dc1-rack1-1  -- /opt/cassandra/tools/bin/cassandra-stress write n=20000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -schema 'Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'
+  - command: kubectl exec -ti cassandra-e2e-dc1-rack1-1  -- /opt/cassandra/tools/bin/cassandra-stress write n=20000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -schema 'Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'
+    namespaced: true
 ---
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraBackup
 metadata:
   name: test-cassandra-backup
-  namespace: casskop-cassandra-e2e
   annotations:
     avoid-temp: annotation-nil-map
 spec:

@@ -5,10 +5,11 @@ variables:
   KUBECONFIG: "/etc/deploy/config"
   helm_repo: https://artifactory.packages.install-os.multis.p.fti.net/virt-sdfy-aic-casskop-helm
   helm_name: casskop
+  NAMESPACE: casskop-cassandra-e2e
 
 stages:
-  - BackupAndRestore
   - ScaleUpAndDownDC
+  - BackupAndRestore
 
 before_script:
 #  - cat /root/.kube/dex.yaml
