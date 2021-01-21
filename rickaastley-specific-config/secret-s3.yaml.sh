@@ -1,3 +1,5 @@
+#!/bin/sh
+
 cat <<EOF
 apiVersion: v1
 kind: Secret
