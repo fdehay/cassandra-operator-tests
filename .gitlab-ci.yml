@@ -40,7 +40,7 @@ kuttl-BackupAndRestore-rick:
    - make rick-kuttl-test BackupAndRestore
  only:
    - master
-  when: always
+ when: always
 
 #deploy-casskop:
 #  stage: test-casskop-rick
