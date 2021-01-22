@@ -70,7 +70,7 @@ spec:
   resources:
     requests: &requests
       cpu: 500m
-      memory: 512Mi
+      memory: 8Gi
     limits: *requests
   topology:
     dc:
