@@ -1,34 +1,31 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  # First uninstall previous (potential) CRDs left in NS
+  # First uninstall previous (potential) CRs left in NS
   - command: kubectl delete cassandraclusters.db.orange.com --all
     ignoreFailure: true
     namespaced: true
-
 
   - command: kubectl delete cassandrabackups.db.orange.com --all
     ignoreFailure: true
     namespaced: true
 
-
   - command: kubectl delete cassandrarestores.db.orange.com --all
     ignoreFailure: true
     namespaced: true
-
 
  # Then delete Casskop helm installation (needed because Kuttl in single given NS does not remove all resources created by swipping the NS)
   - command: helm uninstall casskop $helm_name/$chart_name
     ignoreFailure: true
     namespaced: true
 
-
  # Install Rickaastley requirements (network policies, configmap cacert) to run Casskop
   - command: kubectl apply -f ../../rickaastley-specific-config
     namespaced: true
 
   # Apply S3 secret
-  - command: ()../../rickaastley-specific-config/secret-s3.yaml.sh) | kubectl apply -f -
+  - command: chmod +x ../../rickaastley-specific-config/secret-s3.yaml.sh
+  - command: ../../rickaastley-specific-config/secret-s3.yaml.sh | kubectl apply -f -
     namespaced: true
 
 
