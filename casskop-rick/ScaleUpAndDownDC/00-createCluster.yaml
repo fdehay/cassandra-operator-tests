@@ -69,7 +69,7 @@ spec:
   bootstrapImage: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/cassandra-bootstrap:0.1.7
   backRestSidecar:
 #    image: pfs-pns3-registry.artifactory.si.francetelecom.fr/k8s/instaclustr-icarus:icarus-1.0.5
-    image: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/instaclustr-icarus:1.0.5
+    image: sdfy-aic-casskop-docker.artifactory.si.francetelecom.fr/instaclustr-icarus:1.0.6
     resources:
       limits:
         cpu: 500m
