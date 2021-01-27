@@ -4,4 +4,3 @@ binaryData:
 kind: ConfigMap
 metadata:
   name: cacerts-java-orange
-  namespace: casskop-cassandra-e2e

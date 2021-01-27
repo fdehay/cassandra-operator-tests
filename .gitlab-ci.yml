@@ -5,10 +5,12 @@ variables:
   KUBECONFIG: "/etc/deploy/config"
   helm_repo: https://artifactory.packages.install-os.multis.p.fti.net/virt-sdfy-aic-casskop-helm
   helm_name: casskop
+  chart_name: cassandra-operator
+  NAMESPACE: casskop-cassandra-e2e
 
 stages:
-  - BackupAndRestore
-  - ScaleUpAndDownDC
+ - BackupAndRestore
+ - ScaleUpAndDownDC
 
 before_script:
 #  - cat /root/.kube/dex.yaml
@@ -25,8 +27,6 @@ before_script:
 kuttl-ScaleUpAndDownDC-rick:
   stage: ScaleUpAndDownDC
   image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
-  variables:
-    chart_name: cassandra-operator
   script:
     - make rick-kuttl-test ScaleUpAndDownDC
   only:
@@ -35,8 +35,6 @@ kuttl-ScaleUpAndDownDC-rick:
 kuttl-BackupAndRestore-rick:
  stage: BackupAndRestore
  image: registry.gitlab.si.francetelecom.fr/build-images/kubernetes:2.1
- variables:
-   chart_name: cassandra-operator
  script:
    - make rick-kuttl-test BackupAndRestore
  only:
