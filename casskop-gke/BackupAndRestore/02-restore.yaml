@@ -1,0 +1,17 @@
+apiVersion: db.orange.com/v1alpha1
+kind: CassandraRestore
+metadata:
+  name: test-cassandra-restore
+  labels:
+    app: cassandra
+spec:
+  cassandraBackup: test-cassandra-backup
+  cassandraCluster: cassandra-e2e
+  restorationStrategyType: HARDLINKS # ?
+  entities: k1.standard2
+---
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  #- command: kubectl exec -ti cassandra-e2e-dc1-rack1-1 --namespace $NAMESPACE -- cqlsh -u cassandra -p cassandra --no-color -k k1 -e "select count(*) from standard2"|grep count -A2
+---

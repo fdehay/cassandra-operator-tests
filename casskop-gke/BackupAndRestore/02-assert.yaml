@@ -1,0 +1,8 @@
+apiVersion: db.orange.com/v1alpha1
+kind: CassandraRestore
+metadata:
+  name: test-cassandra-restore
+status:
+  condition: 
+    type: "COMPLETED"
+  progress: 100%

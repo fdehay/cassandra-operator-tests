@@ -1,0 +1,49 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - command: kubectl apply -f secret-s3.yaml
+    namespaced: true
+  # TODO path du chart
+  - command: helm install casskop /mnt/c/Users/Riritueur/Desktop/Casskop/casskop/helm/cassandra-operator --set debug.enabled=true
+    namespaced: true
+
+# gsutil mb -l US-EAST1 gs://casskop-backup-restore-test/
+
+#  - command: helm repo add minio https://helm.min.io/
+#    namespaced: true
+#  - command: helm install minio --set existingSecret=minio-s3-backup-restore-secret --set bucketRoot=casskop-backup-restore-test
+---
+apiVersion: db.orange.com/v1alpha1
+kind: CassandraCluster
+metadata:
+  name: cassandra-e2e
+spec:
+  nodesPerRacks: 2
+  dataCapacity: "1Gi"
+  maxPodUnavailable: 1
+  hardAntiAffinity: false
+  deletePVC: true
+  autoPilot: true
+  autoUpdateSeedList: false
+  backRestSidecar:
+    image: gcr.io/cassandra-operator/instaclustr-icarus:1.0.7
+#    image: gcr.io/cassandra-operator/instaclustr-icarus:1.0.6
+    resources:
+      limits:
+        cpu: 400m
+        memory: 512Mi
+      requests:
+        cpu: 200m
+        memory: 512Mi
+  resources:
+     limits:
+      cpu: 400m
+      memory: 1Gi
+     requests:
+      cpu: 200m
+      memory: 1Gi
+  topology:
+    dc:
+      - name: dc1
+        rack:
+          - name: rack1
